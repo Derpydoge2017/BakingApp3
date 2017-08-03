@@ -27,11 +27,9 @@ import com.example.admin.bakingapp.RecipeChild.Instructions.Instruction;
 import com.example.admin.bakingapp.RecipeChild.Instructions.InstructionAdapter;
 import com.example.admin.bakingapp.RecipeChild.Instructions.InstructionJSONData;
 import com.example.admin.bakingapp.RecipeDisplay.RecipeDisplayChildActivity;
-import com.example.admin.bakingapp.Widget.WidgetRemoteViewFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecipeChildFragment extends Fragment implements InstructionAdapter.InstructionAdapterOnClickHandler {
 
