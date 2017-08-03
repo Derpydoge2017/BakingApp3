@@ -3,6 +3,7 @@ package com.example.admin.bakingapp.Widget;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Binder;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private Cursor data = null;
+    private Cursor data;
 
     Context context;
 
@@ -38,9 +39,9 @@ public class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFa
         if (data != null) {
             data.close();
         }
-
-        data = context.getContentResolver().query(RecipeContract.BASE_CONTENT_URI, null, null, null, null);
-
+        final long identityToken = Binder.clearCallingIdentity();
+        data = context.getContentResolver().query(Uri.parse(RecipeContract.RecipeEntry.TABLE_NAME), null, null, null, null);
+        Binder.restoreCallingIdentity(identityToken);
     }
 
     @Override
