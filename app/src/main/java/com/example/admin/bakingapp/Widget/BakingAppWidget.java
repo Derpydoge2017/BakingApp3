@@ -26,6 +26,10 @@ public class BakingAppWidget extends AppWidgetProvider {
         PendingIntent mainPending = PendingIntent.getActivity(context, 0, mainIntent, 0);
         views.setOnClickPendingIntent(R.id.widget_name, mainPending);
 
+        // Set the RemoteViewsService intent to act as the adapter for the ListView
+        Intent recipeIntent = new Intent(context, WidgetRemoteViewFactory.class);
+        views.setRemoteAdapter(R.id.widget_recipe_list, recipeIntent);
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
 

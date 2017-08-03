@@ -28,12 +28,12 @@ public class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public void onCreate() {
-        mIngredient = intent.getParcelableExtra("android.intent.extra.TITLE");
+
     }
 
     @Override
     public void onDataSetChanged() {
-        mIngredient = intent.getParcelableExtra("android.intent.extra.TITLE");
+
     }
 
     @Override
@@ -50,8 +50,6 @@ public class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFa
     public RemoteViews getViewAt(int position) {
 
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_layout);
-
-
 
         // Set ingredients in the widget
 
