@@ -3,9 +3,12 @@ package com.example.admin.bakingapp.Widget;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Binder;
+import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.example.admin.bakingapp.Data.RecipeContract;
 import com.example.admin.bakingapp.R;
 import com.example.admin.bakingapp.RecipeChild.Ingredients.Ingredient;
 
@@ -17,13 +20,12 @@ import java.util.List;
 
 public class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    Context mContext;
-    List<Ingredient> mIngredient;
+    private Cursor data = null;
 
-    Intent intent = new Intent();
+    Context context;
 
     public WidgetRemoteViewFactory(Context applicationContext) {
-        mContext = applicationContext;
+        context = applicationContext;
     }
 
     @Override
@@ -33,6 +35,11 @@ public class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public void onDataSetChanged() {
+        if (data != null) {
+            data.close();
+        }
+
+        data = context.getContentResolver().query(RecipeContract.BASE_CONTENT_URI, null, null, null, null);
 
     }
 
@@ -43,17 +50,25 @@ public class WidgetRemoteViewFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public int getCount() {
-        return 0;
+        return data == null ? 0 : data.getCount();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
 
-        RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_layout);
-
         // Set ingredients in the widget
+        if (position == AdapterView.INVALID_POSITION ||
+                data == null || !data.moveToPosition(position)) {
+            return null;
+        }
 
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_list_layout);
 
+        int ingredientNameIndex = data.getColumnIndex(RecipeContract.RecipeEntry.COLUMN_RECIPE_NAME_INGREDIENT);
+
+        String ingredientName = data.getString(ingredientNameIndex);
+
+        remoteViews.setTextViewText(R.id.widget_ingredientName, ingredientName);
 
         return remoteViews;
     }
