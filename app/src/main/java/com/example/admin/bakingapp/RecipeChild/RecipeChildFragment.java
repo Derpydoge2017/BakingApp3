@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -52,6 +54,7 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
 
         View rootView = inflater.inflate(R.layout.fragment_child, container, false);
         context = getActivity();
@@ -137,9 +140,7 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
 
         @Override
         protected void onPostExecute(ArrayList<Ingredient> ingredientData) {
-
             mIngredientAdapter.setIngredientData(ingredientData);
-
         }
 
     }

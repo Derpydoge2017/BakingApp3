@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.example.admin.bakingapp.Data.RecipeContract;
@@ -132,8 +133,11 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Rec
 
         @Override
         protected void onPostExecute(ArrayList<Recipe> recipeData){
-
-            mRecipeAdapter.setRecipeData(recipeData);
+            if (recipeData == null) {
+                Toast.makeText(MainActivity.this, "Not connected to the internet", Toast.LENGTH_SHORT).show();
+            } else {
+                mRecipeAdapter.setRecipeData(recipeData);
+            }
 
             for (Recipes recipe : mRecipes) {
                 recipeName = recipe.getRecipeName();

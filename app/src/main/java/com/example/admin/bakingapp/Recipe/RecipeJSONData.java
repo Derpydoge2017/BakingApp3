@@ -24,6 +24,7 @@ public final class RecipeJSONData {
         /* Main information information needed to display */
         final String RECIPE_TITLE = "name";
         final String RECIPE_ID = "id";
+        final String RECIPE_IMAGE_URL = "image";
 
         JSONArray recipeJSON = new JSONArray(recipeJsonStr);
 
@@ -36,6 +37,7 @@ public final class RecipeJSONData {
             /* These are the values that will be collected */
             String recipeTitle;
             int recipeId;
+            String recipeImageURL;
 
             /* Get the JSON object for the recipe */
             JSONObject recipeObject = recipeJSON.getJSONObject(i);
@@ -43,10 +45,11 @@ public final class RecipeJSONData {
             // Extract relevant JSON fields
             recipeTitle = recipeObject.getString(RECIPE_TITLE);
             recipeId = recipeObject.getInt(String.valueOf(RECIPE_ID));
+            recipeImageURL = recipeObject.getString(RECIPE_IMAGE_URL);
 
             recipe.setRecipeName(recipeTitle);
             recipe.setRecipeId(recipeId);
-
+            recipe.setRecipeImageURL(recipeImageURL);
 
             recipeList.add(recipe);
         }

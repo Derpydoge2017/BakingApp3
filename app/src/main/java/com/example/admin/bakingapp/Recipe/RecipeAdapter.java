@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.bakingapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,14 +49,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
 
     public class RecipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mRecipeName;
-        //public TextView mMovieReleaseDate;
+        public ImageView mRecipeImage;
         //public TextView mMovieRate;
         //public ImageView mMoviePosterView;
 
         public RecipeAdapterViewHolder(View view) {
             super(view);
             mRecipeName = (TextView) view.findViewById(R.id.recipe_name);
-            //mMovieReleaseDate = (TextView) view.findViewById(R.id.tv_movie_releaseDate);
+            mRecipeImage = (ImageView) view.findViewById(R.id.recipeImage);
             //mMovieRate = (TextView) view.findViewById(R.id.tv_movie_Rate);
             //mMoviePosterView = (ImageView) view.findViewById(R.id.tv_movie_poster);
             view.setOnClickListener(this);
@@ -128,6 +130,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
         String recipeName = recipeDetails.getRecipeName();
         recipeAdapterViewHolder.mRecipeName.setText(recipeName);
 
+        String recipeImageURL = recipeDetails.getRecipeImageURL();
+        if (recipeImageURL == "") {
+            Picasso.with(context).load(recipeImageURL).into(recipeAdapterViewHolder.mRecipeImage);
+        }
     }
 
 

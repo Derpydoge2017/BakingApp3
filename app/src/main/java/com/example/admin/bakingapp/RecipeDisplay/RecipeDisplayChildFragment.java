@@ -228,7 +228,6 @@ public class RecipeDisplayChildFragment extends Fragment implements ExoPlayer.Ev
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releasePlayer();
         mMediaSession.setActive(false);
     }
 

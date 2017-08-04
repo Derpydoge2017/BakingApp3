@@ -56,39 +56,44 @@ public class RecipeChild extends AppCompatActivity implements AdapterView.OnItem
 
         // Call this to determine which layout we are in (tablet or phone)
         determinePaneLayout();
+
+        //Get EXTRA from intent and attach to Fragment as Argument
+
+        if (savedInstanceState == null) {
+            mRecipe = getIntent().getParcelableExtra("android.intent.extra.TITLE");
+            if (isTwoPane) {
+
+                Context context = this;
+                mIngredientRV = (RecyclerView) findViewById(R.id.ingredient_rv);
+                GridLayoutManager gridIngredientManager = new GridLayoutManager(context, 1);
+                mIngredientRV.setLayoutManager(gridIngredientManager);
+                mIngredientAdapter = new IngredientAdapter();
+                mIngredientRV.setAdapter(mIngredientAdapter);
+
+                loadIngredientData();
+
+                RecipeChildFragmentTablet tabletChildFragment = new RecipeChildFragmentTablet();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentInstructionList, tabletChildFragment).commit();
+
+            } else {
+
+                RecipeChildFragment recipeChildFragment = new RecipeChildFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.recipeChildContainer, recipeChildFragment).commit();
+
+            }
+
+        }
+
     }
 
     private void determinePaneLayout() {
 
-        //Get EXTRA from intent and attach to Fragment as Argument
-        mRecipe = getIntent().getParcelableExtra("android.intent.extra.TITLE");
         FrameLayout fragmentItemDetail = (FrameLayout) findViewById(R.id.fragmentDetail);
 
 
         // If there is a second pane for details
         if (fragmentItemDetail != null) {
             isTwoPane = true;
-        }
-
-        if (isTwoPane){
-
-            Context context = this;
-            mIngredientRV = (RecyclerView) findViewById(R.id.ingredient_rv);
-            GridLayoutManager gridIngredientManager = new GridLayoutManager(context, 1);
-            mIngredientRV.setLayoutManager(gridIngredientManager);
-            mIngredientAdapter = new IngredientAdapter();
-            mIngredientRV.setAdapter(mIngredientAdapter);
-
-            loadIngredientData();
-
-            RecipeChildFragmentTablet tabletChildFragment = new RecipeChildFragmentTablet();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentInstructionList, tabletChildFragment).commit();
-
-        } else {
-
-            RecipeChildFragment recipeChildFragment = new RecipeChildFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.recipeChildContainer, recipeChildFragment).commit();
-
         }
 
     }
