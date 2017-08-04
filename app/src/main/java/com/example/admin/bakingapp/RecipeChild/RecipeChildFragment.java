@@ -1,27 +1,20 @@
 package com.example.admin.bakingapp.RecipeChild;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.admin.bakingapp.Data.RecipeContract;
 import com.example.admin.bakingapp.NetworkUtils;
 import com.example.admin.bakingapp.R;
-import com.example.admin.bakingapp.Recipe.Recipe;
 import com.example.admin.bakingapp.RecipeChild.Ingredients.Ingredient;
 import com.example.admin.bakingapp.RecipeChild.Ingredients.IngredientAdapter;
 import com.example.admin.bakingapp.RecipeChild.Ingredients.IngredientJSONData;
@@ -41,6 +34,12 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
 
     private Context context;
 
+    private final String KEY_INGREDIENT_STATE = "ingredient_state";
+    private final String KEY_INSTRUCTION_STATE = "instruction_state";
+
+    private ArrayList<Ingredient> mIngredientList = new ArrayList<>();
+    private ArrayList<Instruction> mInstructionList = new ArrayList<>();
+
     private IngredientAdapter mIngredientAdapter;
     private InstructionAdapter mInstructionAdapter;
 
@@ -54,7 +53,6 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
 
         View rootView = inflater.inflate(R.layout.fragment_child, container, false);
         context = getActivity();
@@ -70,11 +68,26 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
 
         mIngredientAdapter = new IngredientAdapter();
         mIngredientRV.setAdapter(mIngredientAdapter);
-        loadIngredientData();
 
         mInstructionAdapter = new InstructionAdapter(context, (InstructionAdapter.InstructionAdapterOnClickHandler) this);
         mInstructionRV.setAdapter(mInstructionAdapter);
-        loadInstructionData();
+
+        if (savedInstanceState != null) {
+
+            mIngredientList = savedInstanceState.getParcelableArrayList(KEY_INGREDIENT_STATE);
+            mInstructionList = savedInstanceState.getParcelableArrayList(KEY_INSTRUCTION_STATE);
+
+            mIngredientAdapter.setIngredientData(mIngredientList);
+            mInstructionAdapter.setInstructionData(mInstructionList);
+
+
+
+        } else {
+
+            loadIngredientData();
+            loadInstructionData();
+
+        }
 
         return rootView;
 
@@ -87,6 +100,7 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
         new IngredientQueryTask().execute();
         showIngredientDataView();
     }
+
 
     /**
      * This method will load the instruction
@@ -129,6 +143,7 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
                 ArrayList simpleJsonIngredientData = IngredientJSONData
                         .getIngredientDataStringsFromJson(context, jsonRecipeResponse);
 
+                mIngredientList = simpleJsonIngredientData;
 
                 return simpleJsonIngredientData;
 
@@ -158,6 +173,8 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
                 ArrayList simpleJsonInstructionData = InstructionJSONData
                         .getInstructionDataStringsFromJson(context, jsonRecipeResponse);
 
+                mInstructionList = simpleJsonInstructionData;
+
                 return simpleJsonInstructionData;
 
             } catch (Exception e) {
@@ -176,6 +193,18 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
     private int numberOfColumns() {
         int nColumns = 1;
         return nColumns;
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        // save RecyclerView state
+        outState.putParcelableArrayList(KEY_INGREDIENT_STATE, mIngredientList);
+        outState.putParcelableArrayList(KEY_INSTRUCTION_STATE, mInstructionList);
+
+        super.onSaveInstanceState(outState);
+
     }
 
 }
