@@ -15,8 +15,10 @@ import android.support.v7.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.example.admin.bakingapp.R;
 import com.example.admin.bakingapp.RecipeChild.Instructions.Instruction;
@@ -58,6 +60,11 @@ public class RecipeDisplayChildFragment extends Fragment implements ExoPlayer.Ev
     private PlaybackStateCompat.Builder mStateBuilder;
     private NotificationManager mNotificationManager;
 
+    private Button mPrevButton;
+    private Button mNextButton;
+
+    private static int step_index = 0;
+
     public RecipeDisplayChildFragment(){
 
     }
@@ -76,16 +83,20 @@ public class RecipeDisplayChildFragment extends Fragment implements ExoPlayer.Ev
 
             mInstructionText = (TextView) rootView.findViewById(R.id.instruction_long);
 
-
-
             String instruction_long = mInstruction.getLongDescription();
 
             String videoURL = mInstruction.getVideoURL();
+
+            mPrevButton = (Button) rootView.findViewById(R.id.button_previous);
+            mNextButton = (Button) rootView.findViewById(R.id.button_next);
 
             mInstructionText.setText(instruction_long);
 
             Uri uri = Uri.parse(videoURL);
 
+
+            // Initialize Navigations
+            initializeNavButtons();
 
             // Initialize the Media Session.
             initializeMediaSession();
@@ -98,6 +109,30 @@ public class RecipeDisplayChildFragment extends Fragment implements ExoPlayer.Ev
 
     }
 
+
+    /**
+     * Initialize navigation buttons
+     */
+    private void initializeNavButtons() {
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (step_index > 0) {
+                    step_index--;
+                    refreshStepDetails();
+                }
+            }
+        });
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (step_index < STEPS_LIST.size() - 1) {
+                    step_index++;
+                    refreshStepDetails();
+                }
+            }
+        });
+    }
 
     /**
      * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks

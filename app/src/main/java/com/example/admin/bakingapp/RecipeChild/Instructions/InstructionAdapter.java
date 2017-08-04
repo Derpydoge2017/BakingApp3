@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class InstructionAdapter extends RecyclerView.Adapter<InstructionAdapter.InstructionAdapterViewHolder> {
 
-    private ArrayList mInstructionData;
+    private ArrayList<Instruction> mInstructionData;
 
     /*
      * An on-click handler that we've defined to make it easy for an Activity to interface with
@@ -97,8 +97,6 @@ public class InstructionAdapter extends RecyclerView.Adapter<InstructionAdapter.
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
         return new InstructionAdapterViewHolder(view);
     }
-
-
 
     /**
      * OnBindViewHolder is called by the RecyclerView to display the data at the specified

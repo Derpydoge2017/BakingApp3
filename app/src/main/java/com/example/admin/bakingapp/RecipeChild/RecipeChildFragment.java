@@ -34,6 +34,8 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
 
     private Context context;
 
+    protected static int step_index = 0;
+
     private final String KEY_INGREDIENT_STATE = "ingredient_state";
     private final String KEY_INSTRUCTION_STATE = "instruction_state";
 
@@ -45,6 +47,8 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
 
     private RecyclerView mIngredientRV;
     private RecyclerView mInstructionRV;
+
+    private Instruction mInstruction;
 
     public RecipeChildFragment() {
     }
@@ -79,8 +83,6 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
 
             mIngredientAdapter.setIngredientData(mIngredientList);
             mInstructionAdapter.setInstructionData(mInstructionList);
-
-
 
         } else {
 
@@ -123,12 +125,15 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
 
     @Override
     public void onClick(Instruction instruction) {
+
         Class destinationClass = RecipeDisplayChildActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
         intentToStartDetailActivity.putExtra(Intent.EXTRA_TITLE, instruction);
         startActivity(intentToStartDetailActivity);
+        mInstruction.setInstructionPos(mInstructionList.indexOf(instruction));
 
     }
+
 
 
     public class IngredientQueryTask extends AsyncTask<String, Void, ArrayList<Ingredient>> {
@@ -206,6 +211,5 @@ public class RecipeChildFragment extends Fragment implements InstructionAdapter.
         super.onSaveInstanceState(outState);
 
     }
-
 }
 

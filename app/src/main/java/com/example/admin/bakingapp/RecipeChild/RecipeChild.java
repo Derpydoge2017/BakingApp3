@@ -47,6 +47,8 @@ public class RecipeChild extends AppCompatActivity implements AdapterView.OnItem
 
     private RecyclerView mIngredientRV;
 
+    public static final String STEP_DETAILS = "step_details";
+
     private IngredientAdapter mIngredientAdapter;
 
     @Override

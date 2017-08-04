@@ -16,6 +16,7 @@ public class Instruction implements Parcelable {
     private Integer id;
     private String videoURL;
     private String thumbnailURL;
+    private Integer instructionPos;
 
     public Instruction() {
 
@@ -37,6 +38,7 @@ public class Instruction implements Parcelable {
         this.longDescription = longDescription;
     }
 
+
     public Integer getInstructionId() {
         return id;
     }
@@ -55,7 +57,6 @@ public class Instruction implements Parcelable {
     }
 
 
-
     public String getVideoURL(){
         return videoURL;
     }
@@ -65,6 +66,10 @@ public class Instruction implements Parcelable {
     }
 
 
+    public Integer getInstructionPos() {return instructionPos; }
+
+    public void setInstructionPos(Integer pos) {this.instructionPos = pos; }
+
 
 
     protected Instruction(Parcel in) {
@@ -73,6 +78,7 @@ public class Instruction implements Parcelable {
         id = in.readInt();
         videoURL = in.readString();
         thumbnailURL = in.readString();
+        instructionPos = in.readInt();
     }
 
     @Override
@@ -87,6 +93,7 @@ public class Instruction implements Parcelable {
         dest.writeInt(id);
         dest.writeString(videoURL);
         dest.writeString(thumbnailURL);
+        dest.writeInt(instructionPos);
     }
 
     @SuppressWarnings("unused")
